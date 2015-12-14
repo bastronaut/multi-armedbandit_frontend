@@ -4,22 +4,8 @@ var updateClickCountURL = apiURL + "updateClickCount/";
 var reinitializeURL = apiURL +  "reinitialize";
 
 window.onload = function () {
-  document.cookie="username=bas; expires=Thu, 24 Dec 2017 12:00:00 UTC";
-  document.cookie="yolo=dinges";
-  document.cookie="testor=wot"
-  console.log('cookie is written');
-
   addStatisticsTable();
 }
-
-
-function getCookieValues() {
-  var x = document.cookie;
-  console.log(x);
-  document.getElementById('texty').innerHTML = x;
-}
-
-
 
 
 function addStatisticsTable () {
@@ -27,7 +13,6 @@ function addStatisticsTable () {
 
   statisticsPromise.done(function (res){
     if (res.status === 'success') {
-
       setButtonColor(res.selectedColor)
       clearStatisticsTable();
       generateTable(res);
@@ -44,10 +29,10 @@ function generateTable(colorStats) {
   colorStats.allColorStats.forEach(function (colorStats) {
     var tablerow = table.insertRow(-1);
 
-    var colorCell = tablerow.insertCell(0).innerHTML = colorStats.color;
-    var clicksCell = tablerow.insertCell(1).innerHTML = colorStats.clicks;
-    var viewsCell = tablerow.insertCell(2).innerHTML = colorStats.views;
-    var avgConversionCell = tablerow.insertCell(3).innerHTML = colorStats.avgConversion;
+    tablerow.insertCell(0).innerHTML = colorStats.color;
+    tablerow.insertCell(1).innerHTML = colorStats.clicks;
+    tablerow.insertCell(2).innerHTML = colorStats.views;
+    tablerow.insertCell(3).innerHTML = colorStats.avgConversion;
   })
 }
 
@@ -64,7 +49,6 @@ function reinitialize() {
   reinitializeCallPromise = sendReinitializeCall();
   reinitializeCallPromise.done(function (res){
       if (res.status === 'success') {
-        clearStatisticsTable();
         addStatisticsTable();
       };
     }).fail(function(err){
@@ -80,11 +64,33 @@ function sendReinitializeCall() {
 
 
 function setButtonColor(color) {
-  var button = document.getElementById("conversionButton")
-  var classname = "btn btn-"
-  if (color === "green"){ classname = classname + "success"}
-  else if ( color === "red") { classname = classname + "danger"}
-  else if (color === "blue") { classname = classname + "primary"}
+  var button = document.getElementById("conversionButton");
+  var classname = "btn btn-";
+  if (color === "green"){ classname = classname + "success";}
+  else if ( color === "red") { classname = classname + "danger";}
+  else if (color === "blue") { classname = classname + "primary";}
   else { classname = "btn"}
   button.setAttribute("class", classname)
+}
+
+
+function updateClickCount() {
+  var button = document.getElementById("conversionButton");
+  colorClass = button.className;
+  if (colorClass == "btn btn-success") {
+    var updateClickCountPromise = sendUpdateClickCountCall('green')
+  } else if ( colorClass == "btn btn-danger") {
+    var updateClickCountPromise = sendUpdateClickCountCall('red');
+  } else if ( colorClass == "btn btn-primary") {
+    var updateClickCountPromise = sendUpdateClickCountCall('blue');
+  } else {
+    console.log('error finding button class: ', colorClass);
+  }
+
+}
+
+function sendUpdateClickCountCall(color){
+  console.log('updating for color:', color);
+  var updateClickCountPromise = $.getJSON(updateClickCountURL + color);
+  return updateClickCountPromise;
 }
