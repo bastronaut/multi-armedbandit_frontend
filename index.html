@@ -8,39 +8,86 @@
     <title>Multi-armed bandit optimization</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="js/script.js"></script>
   </head>
   <body>
     <div class="container">
-      <h1>Hello,s wossrld!</h1>
+      <h1>Hello, world!</h1>
 
-      <button class="btn btn-default" onclick="getCookieValues()">get cookie values</button>
-      <p id="texty"></p>
+      <hr></hr>
+
 
 
       <div class="row">
-        <div class="col-lg-2">
-          <button class="btn" id="conversionButton" onclick=updateClickCount()>Buy it now!</button> <br/>
-          <button class="btn btn-info" onclick="reinitialize()">Reinitialize</button>
-        </div>
-        <div class="col-lg-6">
-          Details
-        </div>
-        <div class="col-lg-4">
+        <div class="col-lg-12">
+          <h3>What am I looking at?</h3>
+          <p>
+            This page shows the frontend to an implementation of the multi-armed
+            bandit algorithm (MAB). MAB is a simple machine learning approach
+            used e.g. to optimizing conversion (think alternative to A/B testing).
+          </p>
+
+          <p>
+            Imagine we want to optimize a 'Buy it now!' button. We currently use
+            a red button, but wonder if a blue or green button could perform better.
+            In order to determine which of these colors performs best, we can
+            look at the conversion by dividing the number of views of the button
+            by the number of clicks. A traditional A/B test will show all buttons
+            X number of times, test for statistical significance, then determine
+            the best performer.
+            </p>
+
+            <p>
+            The MAB algorithm however consists of two phases: the exploitation phase
+            and the exploration phase. In the exploitation phase, we simply show
+            the best performing button, and record whenever a conversion occurs.
+            In the exploration phase, we randomly split which button is shown.
+            In a traditional MAB test, the exploration phase happens 10&#37; of
+            the time, and the exploitation phase happens 90&#37; of the time.
+            You can read more about MAB <a href="https://en.wikipedia.org/wiki/Multi-armed_bandit">here</a>
+            and <a href="https://support.google.com/analytics/answer/2844870?hl=nl">here</a>.
+          </p>
+
+          <h3>So now what?</h3>
+          <p class="final-paragraph">
+            Whenever a page is loaded, a button color is selected according the
+            MAB algorithm, and the color has its Number of Views incremented.
+            By clicking on the <strong>'Buy it now!'</strong> button,
+            you increase the Number of Clicks the button color has (and
+            thereby increase its conversion ratio). You can press the
+            <strong>refresh </strong> button to reload the page and see the
+            algorithm select a new color. The <strong>Reinitialize</strong> button
+            resets all scores back to 1, so you can restart the trial.
+          </p>
 
         </div>
-
       </div>
 
       <div class="row">
-        <div class="col-lg-8">
+          <div class="col-lg-4">
+            <button class="btn btn-lg btn-block btn-default" onclick="reinitialize()">Reinitialize</button>
+          </div>
+
+          <div class="col-lg-4">
+            <button class="btn btn-lg btn-block" id="conversionButton" onclick="colorClicked()">Buy it now!</button> <br/>
+          </div>
+
+          <div class="col-lg-4">
+            <button class="btn btn-lg btn-block btn-default" onclick="reinitialize()">Refresh page</button>
+          </div>
+        </div>
+
+      <div class="row">
+        <div class="col-lg-12">
+          <h3>Statistics table</h3>
           <table class="table table-striped" id="colorStatistics">
             <thead>
               <tr>
                 <th>
-                  Color
+                  Button color
                 </th>
                 <th>
                   Number of Clicks
@@ -49,7 +96,7 @@
                   Number of Views
                 </th>
                 <th>
-                  Conversion
+                  Conversion Ratio
                 </th>
               </tr>
           </thead>
@@ -58,10 +105,19 @@
           </tbody>
           </table>
         </div>
+    </div>
 
-        <div class="col-lg-4"></div>
+    <div class="row">
+      <div class="col-lg-12">
+        <h3>P.S.</h3>
+        <p>
+          This whole thing could have been written in frontend javascript. However,
+          as I want to experiment with backend tech, the data is fetched from
+          a database. Therefore, if multiple people interact with this frontend
+          at the same time, the statistics may seem wonky to you (AKA: it's a
+          feature, not a bug). Github frontend and backend
+        </p>
       </div>
-
     </div>
 
 
