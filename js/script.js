@@ -9,6 +9,8 @@ var getStatisticsURL = apiURL + "getStatistics";
 var updateClickCountURL = apiURL + "updateClickCount/";
 var reinitializeURL = apiURL +  "reinitialize";
 
+var buyitnowclicked = false;
+
 window.onload = function () {
   getSelectedColor()
   .then(setButtonColor)
@@ -65,9 +67,10 @@ function reinitialize() {
   reinitializeCallPromise = sendReinitializeCall();
   reinitializeCallPromise.done(function (res){
       if (res.status === 'success') {
+        console.log('resetting is done!')
         getSelectedColor()
         .then(setButtonColor)
-        .then(addStatisticsTable())
+        .then(addStatisticsTable)
       };
     }).fail(function(err){
       console.log('error: ' + err.status);
@@ -83,7 +86,6 @@ function sendReinitializeCall() {
 
 function setButtonColor(colorResult) {
   var color = colorResult.selectedColor;
-  console.log(color);
   var button = document.getElementById("conversionButton");
   var classname = "btn btn-lg btn-block btn-";
   if (color === "green"){ classname = classname + "success";}
@@ -95,8 +97,13 @@ function setButtonColor(colorResult) {
 
 
 function colorClicked() {
-  updateClickCount()
-  .then(addStatisticsTable());
+  if (!buyitnowclicked) {
+    updateClickCount()
+    .then(addStatisticsTable());
+    buyitnowclicked = true;
+  } else {
+    console.log('button already clicked this page load')
+  }
 }
 
 function updateClickCount() {
@@ -113,8 +120,7 @@ function updateClickCount() {
   } else {
     console.log('error finding button class: ', colorClass);
   };
-  console.log('resolving...')
-  resolve('yo')
+  resolve()
   })
   return updateClickPromise;
 }
@@ -127,48 +133,6 @@ function sendUpdateClickCountCall(color){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var promiseCount = 0;
-function testPromise() {
-  var thisPromiseCount = ++promiseCount;
-
-  var log = document.getElementById('log');
-  log.insertAdjacentHTML('beforeend', thisPromiseCount +
-      ') Started (<small>Sync code started</small>)<br/>');
-
-  // We make a new promise: we promise the string 'result' (after waiting 3s)
-  var p1 = new Promise(
-    function(resolve, reject) {
-      log.insertAdjacentHTML('beforeend', thisPromiseCount);
-
-      window.setTimeout(
-        function() {
-          // We fulfill the promise !
-          resolve(thisPromiseCount)
-        }, Math.random() * 2000 + 1000);
-    });
-
-  // We define what to do when the promise is fulfilled
-  p1.then(
-    // Just log the message and a value
-    function(val) {
-      log.insertAdjacentHTML('beforeend', val +
-          ') Promise fulfilled (<small>Async code terminated</small>)<br/>');
-    });
-
-  log.insertAdjacentHTML('beforeend', thisPromiseCount +
-      ') Promise made (<small>Sync code terminated</small>)<br/>');
+function reloadPage(){
+  window.location.reload();
 }

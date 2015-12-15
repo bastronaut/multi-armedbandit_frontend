@@ -60,7 +60,12 @@
             thereby increase its conversion ratio). You can press the
             <strong>refresh </strong> button to reload the page and see the
             algorithm select a new color. The <strong>Reinitialize</strong> button
-            resets all scores back to 1, so you can restart the trial.
+            resets all scores back to 1, so you can restart the trial. You can only
+            click the 'Buy it now!' button once per page load (it may sometimes
+            seem as if it's showing the button that does not have the highest
+            conversion rate at all. This is because its either in the exploration
+            mode or your latest page view has bumped the conversion down, but the
+            color was selected before your page view was counted).
           </p>
 
         </div>
@@ -76,7 +81,7 @@
           </div>
 
           <div class="col-lg-4">
-            <button class="btn btn-lg btn-block btn-default" onclick="reinitialize()">Refresh page</button>
+            <button class="btn btn-lg btn-block btn-default" onclick="reloadPage()">Refresh page</button>
           </div>
         </div>
 
@@ -112,10 +117,14 @@
         <h3>P.S.</h3>
         <p>
           This whole thing could have been written in frontend javascript. However,
-          as I want to experiment with backend tech, the data is fetched from
+          as I wanted to experiment with backend tech, the data is fetched from
           a database. Therefore, if multiple people interact with this frontend
-          at the same time, the statistics may seem wonky to you (AKA: it's a
-          feature, not a bug). Github frontend and backend
+          at the same time, the statistics may seem wonky to you (a.k.a. the it's a
+          feature, not a bug excuse).
+        </p>
+          <p>
+          Github <a href="https://github.com/bassijtsma/multi-armedbandit">frontend</a>
+          and <a href="https://github.com/bassijtsma/multi-armedbandit_backend">backend</a>.
         </p>
       </div>
     </div>
