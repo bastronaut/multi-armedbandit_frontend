@@ -4,9 +4,9 @@
 
 
 var apiURL = "http://localhost:3000/";
-var getSelectedColorURL = apiURL + "getColor";
-var getStatisticsURL = apiURL + "getStatistics";
-var updateClickCountURL = apiURL + "updateClickCount/";
+var getSelectedColorURL = apiURL + "color";
+var getStatisticsURL = apiURL + "statistics";
+var updateClickCountURL = apiURL + "clickcount/";
 var reinitializeURL = apiURL +  "reinitialize";
 
 var buyitnowclicked = false;
@@ -125,9 +125,13 @@ function updateClickCount() {
   return updateClickPromise;
 }
 
+// TODO: refactor color to send put in request payload
 function sendUpdateClickCountCall(color){
   console.log('updating for color:', color);
-  var updateClickCountPromise = $.getJSON(updateClickCountURL + color);
+  var updateClickCountPromise = $.ajax({
+    url updateClickCountURL + color,
+    type: 'PUT'
+  });
   return updateClickCountPromise;
 }
 
